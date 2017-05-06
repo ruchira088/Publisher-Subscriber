@@ -6,7 +6,9 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
 
+GET     /topic                      controllers.MessageController.getTopics
 POST    /topic                      controllers.MessageController.createTopic
+
 
 
 # Map static resources from the /public folder to the /assets URL path

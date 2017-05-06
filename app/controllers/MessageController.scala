@@ -5,9 +5,10 @@ import java.util.UUID
 import javax.inject.{Inject, Singleton}
 
 import models.Topic
-import play.api.libs.json.{JsValue, Json, OFormat}
+import play.api.libs.json._
 import play.api.mvc._
 import play.modules.reactivemongo.{MongoController, ReactiveMongoApi, ReactiveMongoComponents}
+import reactivemongo.play.json._
 import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -43,12 +44,14 @@ class MessageController @Inject() (val reactiveMongoApi: ReactiveMongoApi) exten
     }
   }
 
-  def getTopic = Action.async {
+  def getTopics = Action.async {
     getCollection
       .flatMap {
-        _.find(Json.obj()).cursor[Topic]().head
+        _.find(Json.obj()).cursor[Topic]().collect[List]()
       }
-      .map { Ok(_) }
+      .map {
+        topics => Ok(Json.obj("topics" -> JsArray(topics.map(Json.toJson(_)))))
+      }
   }
 
   def jsonBody(implicit request: Request[AnyContent]): JsValue =
