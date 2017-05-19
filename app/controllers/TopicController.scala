@@ -1,18 +1,18 @@
 package controllers
 
+import java.util.UUID
 import javax.inject.{Inject, Singleton}
 
-import models.Topic
 import controllers.requests.TopicRequest
+import models.Topic
 import play.api.libs.json._
-import play.api.mvc._
+import play.api.mvc.{Action, _}
 import play.modules.reactivemongo.ReactiveMongoApi
-import services.database.{DatabaseCollection, DbErrorResult, MongoCollection}
+import services.database.{DatabaseCollection, MongoCollection}
 import utils.ControllerUtils._
 import utils.RequestUtils
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 
 @Singleton
 class TopicController @Inject()(implicit val reactiveMongoApi: ReactiveMongoApi) extends Controller
@@ -23,7 +23,7 @@ class TopicController @Inject()(implicit val reactiveMongoApi: ReactiveMongoApi)
 
   def createTopic = Action.async {
     implicit request => {
-      databaseCollection.insert(Topic(jsonBody.as[TopicRequest].topicName))
+      databaseCollection.insert(Topic(id = UUID.randomUUID().toString, name = jsonBody.as[TopicRequest].topicName))
         .map { RequestUtils.handleDatabaseInsertResult[Topic](Ok(_), InternalServerError(_)) }
     }
   }

@@ -9,6 +9,7 @@ scalaVersion := "2.11.11"
 
 libraryDependencies += filters
 libraryDependencies += "org.reactivemongo" % "play2-reactivemongo_2.11" % "0.12.2"
+libraryDependencies += "org.apache.kafka" % "kafka-clients" % "0.10.2.1"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % Test
 
 // Adds additional packages into Twirl

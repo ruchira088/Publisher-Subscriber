@@ -4,14 +4,13 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET     /       controllers.HomeController.index
 
-GET     /topic                      controllers.TopicController.getTopics
-GET     /topic/:topicName           controllers.TopicController.getTopic(topicName: String)
-POST    /topic                      controllers.TopicController.createTopic
-
-POST    /subscriber                 controllers.SubscriberController.create
-
+GET     /topics     controllers.TopicController.getTopics
+POST    /topics     controllers.TopicController.createTopic
+GET     /topics/:topicName      controllers.TopicController.getTopic(topicName: String)
+POST    /topics/:topicName/messages     controllers.MessageController.publishMessage(topicName: String)
+POST    /topics/:topicName/subscriptions        controllers.SubscriptionController.create(topicName: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file       controllers.Assets.versioned(path="/public", file: Asset)
